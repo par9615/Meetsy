@@ -1,0 +1,11 @@
+{
+  "name": "meetsy",
+  "version": "1.0.0",
+  "description": "The Etsy Google Meet add-on.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Jordan Terry",
+  "license": "ISC"
+}
