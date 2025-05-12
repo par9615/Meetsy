@@ -10,22 +10,31 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x]
+        # https://nodejs.org/en/about/previous-releases
+        node-version: [24.x]
+
     steps:
-      - uses: actions/checkout@v4
+      - name: "Checkout ${{ github.ref }} branch in ${{ github.repository }} repository."
+        uses: actions/checkout@v4
+
       - name: "Use Node.js ${{ matrix.node-version }}"
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
           cache-dependency-path: ./package-lock.json
-      - run: npm ci
+
+      - name: "Install dependencies for CI"
+        run: npm ci
         working-directory: ./
-      - run: npm run build
+
+      - name: "Build using npm"
+        run: npm run build
         working-directory: ./
+
       - name: "Upload build"
         uses: actions/upload-artifact@v4
         with:
-          name: page
+          name: 'page'
           path: ./dist
           if-no-files-found: error
