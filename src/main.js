@@ -1,7 +1,7 @@
 import { meet } from '@googleworkspace/meet-addons/meet.addons';
 
-const CLOUD_PROJECT_NUMBER = 'CLOUD_PROJECT_NUMBER';
-const MAIN_STAGE_URL = 'MAIN_STAGE_URL';
+const CLOUD_PROJECT_NUMBER = '597555850167';
+const MAIN_STAGE_URL = 'https://jordanterry.github.io/Meetsy/meetsy/MainStage.html';
 
 /**
  * Prepares the add-on Side Panel Client, and adds an event to launch the
@@ -19,4 +19,12 @@ export async function setUpAddon() {
                 mainStageUrl: MAIN_STAGE_URL
             });
         });
+}
+
+
+export async function initializeMainStage() {
+  const session = await meet.addon.createAddonSession({
+    cloudProjectNumber: CLOUD_PROJECT_NUMBER,
+  });
+  await session.createMainStageClient();
 }

@@ -2,9 +2,9 @@
   "name": "meetsy",
   "version": "1.0.0",
   "description": "The Etsy Google Meet add-on.",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "build": "webpack --config webpack.config.js"
+    "build": "mkdir -p dist/meetsy && cp src/*.html dist/meetsy && cp src/*.png dist/meetsy && npx webpack"
   },
   "author": "Jordan Terry",
   "license": "ISC",
