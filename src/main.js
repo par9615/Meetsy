@@ -23,6 +23,11 @@ export async function setUpAddon() {
             await sidePanelClient.startActivity({
                 mainStageUrl: MAIN_STAGE_URL
             });
+
+            await sidePanelClient.getMeetingInfo().then((meetingInfo) => {
+              console.log(meetingInfo);
+            });
+
         });
 }
 
@@ -33,13 +38,3 @@ export async function initializeMainStage() {
   });
   await session.createMainStageClient();
 }
-
-export async function getParticipants() {
-  const session = await meet.addon.createAddonSession({
-    cloudProjectNumber: CLOUD_PROJECT_NUMBER,
-  });
-  const mainStageClient = await session.createMainStageClient();
-  const participants = await mainStageClient.getParticipants();
-  return participants;
-}
-
