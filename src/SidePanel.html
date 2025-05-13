@@ -18,6 +18,9 @@
         document.body.onload = () => {
             meetsy.setUpAddon();
         };
+        meetsy.getParticipants().then((participants) => {
+            console.log("Participants: ", participants);
+        });
     </script>
 </body>
 </html>

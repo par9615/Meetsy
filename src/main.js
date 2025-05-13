@@ -33,3 +33,13 @@ export async function initializeMainStage() {
   });
   await session.createMainStageClient();
 }
+
+export async function getParticipants() {
+  const session = await meet.addon.createAddonSession({
+    cloudProjectNumber: CLOUD_PROJECT_NUMBER,
+  });
+  const mainStageClient = await session.createMainStageClient();
+  const participants = await mainStageClient.getParticipants();
+  return participants;
+}
+
