@@ -2,6 +2,7 @@ const path = require('path');
 const { EnvironmentPlugin } = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const nodeExternals = require('webpack-node-externals');
 
 
 require('dotenv').config();
@@ -9,6 +10,8 @@ require('dotenv').config();
 module.exports =  {
     mode: 'development',
     entry: './src/main.js',
+    externalsPresets: { node: true },
+    externals: [nodeExternals()],
     module: {
         rules: [
             {

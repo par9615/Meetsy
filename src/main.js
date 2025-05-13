@@ -1,4 +1,5 @@
-import { meet, SpacesServiceClient } from '@googleworkspace/meet-addons/meet.addons';
+import { meet } from '@googleworkspace/meet-addons/meet.addons';
+import { SpacesServiceClient } from '@google-apps/meet';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 
