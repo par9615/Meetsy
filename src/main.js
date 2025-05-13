@@ -2,8 +2,11 @@ import { meet } from '@googleworkspace/meet-addons/meet.addons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 
-const CLOUD_PROJECT_NUMBER = process.env.CLOUD_PROJECT_NUMBER;
-const MAIN_STAGE_URL = process.env.MAIN_STAGE_URL;
+// const CLOUD_PROJECT_NUMBER = process.env.CLOUD_PROJECT_NUMBER;
+// const MAIN_STAGE_URL = process.env.MAIN_STAGE_URL;
+
+const CLOUD_PROJECT_NUMBER= '597555850167';
+const MAIN_STAGE_URL= 'https://jordanterry.github.io/Meetsy/meetsy/MainStage.html';
 
 /**
  * Prepares the add-on Side Panel Client, and adds an event to launch the
