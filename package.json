@@ -9,7 +9,8 @@
   "author": "Jordan Terry",
   "license": "ISC",
   "dependencies": {
-    "@googleworkspace/meet-addons": "^1.2.0"
+    "@googleworkspace/meet-addons": "^1.2.0",
+    "dotenv": "^16.5.0"
   },
   "devDependencies": {
     "webpack": "^5.99.7",

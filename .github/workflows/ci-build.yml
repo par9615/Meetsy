@@ -24,6 +24,14 @@ jobs:
           cache: 'npm'
           cache-dependency-path: ./package-lock.json
 
+      - name: "Generate .env file for project"
+        run: |
+          cat <<EOF > .env
+          CLOUD_PROJECT_NUMBER=${{ secrets.CLOUD_PROJECT_NUMBER }}
+          MAIN_STAGE_URL=${{ secrets.MAIN_STAGE_URL }}
+          SIDE_PANEL_URL=${{ secrets.SIDE_PANEL_URL }}
+          EOF
+
       - name: "Install dependencies for CI"
         run: npm ci
         working-directory: ./
