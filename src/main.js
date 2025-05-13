@@ -1,4 +1,6 @@
 import { meet } from '@googleworkspace/meet-addons/meet.addons';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap';
 
 const CLOUD_PROJECT_NUMBER = process.env.CLOUD_PROJECT_NUMBER;
 const MAIN_STAGE_URL = process.env.MAIN_STAGE_URL;

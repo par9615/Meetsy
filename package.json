@@ -4,16 +4,22 @@
   "description": "The Etsy Google Meet add-on.",
   "main": "main.js",
   "scripts": {
-    "build": "mkdir -p dist/meetsy && cp src/*.html dist/meetsy && cp src/*.png dist/meetsy && npx webpack"
+    "build": "npx webpack"
   },
   "author": "Jordan Terry",
   "license": "ISC",
   "dependencies": {
     "@googleworkspace/meet-addons": "^1.2.0",
+    "bootstrap": "^5.3.6",
     "dotenv": "^16.5.0"
   },
   "devDependencies": {
-    "webpack": "^5.99.7",
+    "copy-webpack-plugin": "^13.0.0",
+    "css-loader": "^7.1.2",
+    "html-loader": "^5.1.0",
+    "html-webpack-plugin": "^5.6.3",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.99.8",
     "webpack-cli": "^6.0.1"
   }
 }
