@@ -1,4 +1,4 @@
-import { meet } from '@googleworkspace/meet-addons/meet.addons';
+import { meet, SpacesServiceClient } from '@googleworkspace/meet-addons/meet.addons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 
@@ -12,6 +12,8 @@ const MAIN_STAGE_URL= 'https://par9615.github.io/Meetsy/meetsy/MainStage.html';
  * Prepares the add-on Side Panel Client, and adds an event to launch the
  * activity in the main stage when the main button is clicked.
  */
+let meetingId;
+
 export async function setUpAddon() {
     const session = await meet.addon.createAddonSession({
         cloudProjectNumber: CLOUD_PROJECT_NUMBER,
@@ -26,6 +28,15 @@ export async function setUpAddon() {
 
             await sidePanelClient.getMeetingInfo().then((meetingInfo) => {
               console.log(meetingInfo);
+              meetingId = meetingInfo.meetingId;
+            });
+
+            await new SpacesServiceClient.getSpace(
+              {
+                name: meetingId
+              }
+            ).then((space) => {
+              console.log(space);
             });
 
         });
