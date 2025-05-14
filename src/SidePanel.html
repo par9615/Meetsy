@@ -1,14 +1,15 @@
-<html>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; frame-src 'self' https://accounts.google.com; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; ">
+<!DOCTYPE html>
+<html lang="en-us">
 <head>
     <title>Meetsy Side Panel</title>
     <script src="./main.js"></script>
+    <script src="https://accounts.google.com/gsi/client"></script>
 </head>
 
 
 <body style="width: 100%; height: 100%; margin: 0">
     <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-start" id="start-activity">
+        <li class="list-group-item d-flex justify-content-between align-items-start" id="auth-button">
             <div class="ms-2 me-auto">
                 <div class="fw-bold">🍿Popcorn</div>
                 Create a random order for pop-corning between meeting participants. Miguel
@@ -16,10 +17,73 @@
         </li>
     </ul>
     <script>
-        document.body.onload = () => {
-            meetsy.setUpAddon();
-        };
-        console.log("Side panel loaded");
+            document.body.onload = () => {
+                var tokenClient = google.accounts.oauth2.initTokenClient({
+                    client_id: '597555850167-knh3eknc2stovfs71d2u0tbjo4s0djh8.apps.googleusercontent.com',
+                    scope: [
+                        'https://www.googleapis.com/auth/meetings.space.created',
+                        'https://www.googleapis.com/auth/meetings.space.readonly'
+                    ].join(' '),
+                    callback: (tokenResponse) => {
+                        console.log(tokenResponse);
+                        console.log(tokenResponse.access_token);
+
+                        var participants = fetchMeetingParticipants(tokenResponse.access_token, 'vyf-krmw-zbp');
+                        console.log(participants);
+                        // tokenResponse.access_token contains your Bearer token
+                    }
+                });
+                document.getElementById('auth-button').addEventListener('click', () => {
+                    tokenClient.requestAccessToken();
+                });
+
+                meetsy.setUpAddon();
+            };
+
+
+
+            /**
+             * Retrieves the list of participants for a given Meet space.
+             *
+             * @param {string} oauthToken — A valid OAuth2 bearer token with
+             *     at least the scope `https://www.googleapis.com/auth/meetings.participants.readonly`
+             * @param {string} meetSpaceId — The Meet “space” ID (e.g. "spaces/ABC123")
+             * @returns {Promise<Array<Object>>} — Array of participant objects
+             */
+            async function fetchMeetingParticipants(oauthToken, meetSpaceId) {
+                const headers = {
+                    'Authorization': `Bearer ${oauthToken}`,
+                    'Accept': 'application/json'
+                };
+
+                // 1) Get the space to find its activeConference record name
+                const spaceRes = await fetch(
+                    `https://meet.googleapis.com/v2/spaces/${encodeURIComponent(meetSpaceId)}`,
+                    { method: 'GET', headers }
+                );
+                if (!spaceRes.ok) {
+                    throw new Error(`Failed to fetch space ${meetSpaceId}: ${spaceRes.status}`);
+                }
+                const spaceData = await spaceRes.json();
+                // activeConference.name is like "conferenceRecords/XYZ"
+                const recordName = spaceData.activeConference?.name;
+                if (!recordName) {
+                    throw new Error(`No active conference found for space ${meetSpaceId}`);
+                }
+
+                // 2) List participants in that conference record
+                const partsRes = await fetch(
+                    `https://meet.googleapis.com/v2/${recordName}/participants`,
+                    { method: 'GET', headers }
+                );
+                if (!partsRes.ok) {
+                    throw new Error(`Failed to list participants: ${partsRes.status}`);
+                }
+                const partsData = await partsRes.json();
+                // The API returns { participants: [...], nextPageToken: "..." }
+                return partsData.participants || [];
+            }
+
     </script>
 </body>
 </html>

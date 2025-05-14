@@ -19,21 +19,16 @@ export async function setUpAddon() {
         cloudProjectNumber: CLOUD_PROJECT_NUMBER,
     });
 
-
-    oauthSignIn();
     const sidePanelClient = await session.createSidePanelClient();
-    document
-        .getElementById('start-activity')
-        .addEventListener('click', async () => {
-            await sidePanelClient.startActivity({
-                mainStageUrl: MAIN_STAGE_URL
-            });
-            await sidePanelClient.getMeetingInfo().then((meetingInfo) => {
-              console.log(meetingInfo);
-              meetingId = meetingInfo.meetingId;
-            });
-
-        });
+    console.log("code: " + (await sidePanelClient.getMeetingInfo()).meetingCode)
+    console.log("id: " + (await sidePanelClient.getMeetingInfo()).meetingId)
+    // document
+    //     .getElementById('start-activity')
+    //     .addEventListener('click', async () => {
+    //         await sidePanelClient.startActivity({
+    //             mainStageUrl: MAIN_STAGE_URL
+    //         });
+    //     });
 }
 
 
