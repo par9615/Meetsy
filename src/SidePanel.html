@@ -25,6 +25,8 @@
                         'https://www.googleapis.com/auth/meetings.space.readonly'
                     ].join(' '),
                     callback: (tokenResponse) => {
+                        console.log(tokenResponse);
+                        console.log(tokenResponse.access_token);
                         // tokenResponse.access_token contains your Bearer token
                     }
                 });
