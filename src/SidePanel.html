@@ -18,6 +18,8 @@
     </ul>
     <script>
             document.body.onload = () => {
+                const sessionId = meetsy.setUpAddon();
+
                 var tokenClient = google.accounts.oauth2.initTokenClient({
                     client_id: '597555850167-knh3eknc2stovfs71d2u0tbjo4s0djh8.apps.googleusercontent.com',
                     scope: [
@@ -28,8 +30,17 @@
                         console.log(tokenResponse);
                         console.log(tokenResponse.access_token);
 
-                        var participants = fetchMeetingParticipants(tokenResponse.access_token, 'vyf-krmw-zbp');
+                        var participants = fetchMeetingParticipants(tokenResponse.access_token, sessionId);
                         console.log(participants);
+
+                        var userIds = participants.map((participant) => {
+                            return participant.signedinUser?.userId.split('/')[1];
+                        });
+                        console.log("User IDs: ", userIds);
+
+                        var emails = fetchParticipantsEmails(tokenResponse.access_token, userIds);
+                        console.log("Emails: ", emails);
+                        
                         // tokenResponse.access_token contains your Bearer token
                     }
                 });
@@ -37,7 +48,7 @@
                     tokenClient.requestAccessToken();
                 });
 
-                meetsy.setUpAddon();
+                
             };
 
 
@@ -84,6 +95,24 @@
                 return partsData.participants || [];
             }
 
+
+            async function fetchParticipantsEmails(oauthToken, userIds) {
+                const headers = {
+                    'Authorization': `Bearer ${oauthToken}`,
+                    'Accept': 'application/json'
+                };
+                const userIdsString = userIds.join(',');
+                const url = `https://people.googleapis.com/v1/people:batchGet?personFields=emailAddresses&resourceNames=people/${userIdsString}`;
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: headers
+                });
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch participants emails: ${response.status}`);
+                }
+                const data = await response.json();
+                return data.emailAddresses.map(email => email.value);
+            }
     </script>
 </body>
 </html>
