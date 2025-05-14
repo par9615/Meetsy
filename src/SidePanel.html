@@ -18,7 +18,7 @@
     </ul>
     <script>
             document.body.onload = async() => {
-                const sessionId = await meetsy.setUpAddon();
+                const spaceId = await meetsy.setUpAddon();
 
                 var tokenClient = google.accounts.oauth2.initTokenClient({
                     client_id: '597555850167-knh3eknc2stovfs71d2u0tbjo4s0djh8.apps.googleusercontent.com',
@@ -26,19 +26,19 @@
                         'https://www.googleapis.com/auth/meetings.space.created',
                         'https://www.googleapis.com/auth/meetings.space.readonly'
                     ].join(' '),
-                    callback: (tokenResponse) => {
+                    callback: async (tokenResponse) => {
                         console.log(tokenResponse);
                         console.log(tokenResponse.access_token);
 
-                        var participants = fetchMeetingParticipants(tokenResponse.access_token, sessionId);
+                        var participants = await fetchMeetingParticipants(tokenResponse.access_token, spaceId);
                         console.log(participants);
 
                         var userIds = participants.map((participant) => {
-                            return participant.signedinUser?.userId.split('/')[1];
+                            return participant.signedinUser?.user.split('/')[1];
                         });
                         console.log("User IDs: ", userIds);
 
-                        var emails = fetchParticipantsEmails(tokenResponse.access_token, userIds);
+                        var emails = await fetchParticipantsEmails(tokenResponse.access_token, userIds);
                         console.log("Emails: ", emails);
 
                         // tokenResponse.access_token contains your Bearer token
@@ -109,7 +109,9 @@
                     url.searchParams.append('resourceNames', `people/${userId}`);
                 });
 
-                const response = await fetch(url.toString, {
+                url.searchParams.append('personFields', 'emailAddresses');
+
+                const response = await fetch(url.toString(), {
                     method: 'GET',
                     headers: headers
                 });
