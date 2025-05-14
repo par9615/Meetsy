@@ -24,7 +24,10 @@
                     client_id: '597555850167-knh3eknc2stovfs71d2u0tbjo4s0djh8.apps.googleusercontent.com',
                     scope: [
                         'https://www.googleapis.com/auth/meetings.space.created',
-                        'https://www.googleapis.com/auth/meetings.space.readonly'
+                        'https://www.googleapis.com/auth/meetings.space.readonly',
+                        'https://www.googleapis.com/auth/profile.emails.read',
+                        'https://www.googleapis.com/auth/user.emails.read',
+                        'https://www.googleapis.com/auth/userinfo.email'
                     ].join(' '),
                     callback: async (tokenResponse) => {
                         console.log(tokenResponse);
@@ -126,7 +129,7 @@
                         return person.emailAddresses[0].value;
                     }
                     return null;
-                    
+
                 }).filter(email => email !== null);
             }
     </script>
