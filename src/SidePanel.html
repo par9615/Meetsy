@@ -1,13 +1,15 @@
-<html>
+<!DOCTYPE html>
+<html lang="en-us">
 <head>
     <title>Meetsy Side Panel</title>
     <script src="./main.js"></script>
+    <script src="https://accounts.google.com/gsi/client"></script>
 </head>
 
 
 <body style="width: 100%; height: 100%; margin: 0">
     <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-start" id="start-activity">
+        <li class="list-group-item d-flex justify-content-between align-items-start" id="auth-button">
             <div class="ms-2 me-auto">
                 <div class="fw-bold">🍿Popcorn</div>
                 Create a random order for pop-corning between meeting participants.
@@ -15,9 +17,24 @@
         </li>
     </ul>
     <script>
-        document.body.onload = () => {
-            meetsy.setUpAddon();
-        };
+            document.body.onload = () => {
+                var tokenClient = google.accounts.oauth2.initTokenClient({
+                    client_id: '597555850167-knh3eknc2stovfs71d2u0tbjo4s0djh8.apps.googleusercontent.com',
+                    scope: [
+                        'https://www.googleapis.com/auth/meetings.space.created',
+                        'https://www.googleapis.com/auth/meetings.space.readonly'
+                    ].join(' '),
+                    callback: (tokenResponse) => {
+                        // tokenResponse.access_token contains your Bearer token
+                    }
+                });
+                document.getElementById('auth-button').addEventListener('click', () => {
+                    tokenClient.requestAccessToken();
+                });
+
+                meetsy.setUpAddon();
+            };
+
     </script>
 </body>
 </html>
