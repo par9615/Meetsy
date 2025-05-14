@@ -20,6 +20,7 @@ export async function setUpAddon() {
     });
 
 
+    oauthSignIn();
     const sidePanelClient = await session.createSidePanelClient();
     document
         .getElementById('start-activity')
@@ -27,7 +28,6 @@ export async function setUpAddon() {
             await sidePanelClient.startActivity({
                 mainStageUrl: MAIN_STAGE_URL
             });
-            oauthSignIn();
             await sidePanelClient.getMeetingInfo().then((meetingInfo) => {
               console.log(meetingInfo);
               meetingId = meetingInfo.meetingId;
@@ -45,6 +45,7 @@ export async function initializeMainStage() {
 }
 
 function oauthSignIn() {
+  console.log('OAUTHING');
   // Google's OAuth 2.0 endpoint for requesting an access token
   var oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
 
