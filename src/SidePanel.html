@@ -40,7 +40,7 @@
 
                         var emails = fetchParticipantsEmails(tokenResponse.access_token, userIds);
                         console.log("Emails: ", emails);
-                        
+
                         // tokenResponse.access_token contains your Bearer token
                     }
                 });
@@ -102,16 +102,29 @@
                     'Accept': 'application/json'
                 };
                 const userIdsString = userIds.join(',');
-                const url = `https://people.googleapis.com/v1/people:batchGet?personFields=emailAddresses&resourceNames=people/${userIdsString}`;
-                const response = await fetch(url, {
+                const baseURL = 'https://people.googleapis.com/v1/people:batchGet';
+                const url = new URL(baseURL);
+
+                userIds.forEach(userId => {
+                    url.searchParams.append('resourceNames', `people/${userId}`);
+                });
+
+                const response = await fetch(url.toString, {
                     method: 'GET',
                     headers: headers
                 });
+
                 if (!response.ok) {
                     throw new Error(`Failed to fetch participants emails: ${response.status}`);
                 }
                 const data = await response.json();
-                return data.emailAddresses.map(email => email.value);
+                return data.responses.map(response => {
+                    const person = response.person;
+                    if (person && person.emailAddresses && person.emailAddresses.length > 0) {
+                        return person.emailAddresses[0].value;
+                    }
+                    return null;
+                }).filter(email => email !== null);
             }
     </script>
 </body>
