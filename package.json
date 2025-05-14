@@ -9,11 +9,11 @@
   "author": "Jordan Terry",
   "license": "ISC",
   "dependencies": {
-    "@google-apps/meet": "^0.6.0",
     "@google-cloud/local-auth": "^2.1.1",
     "@googleworkspace/meet-addons": "^1.2.0",
     "bootstrap": "^5.3.6",
-    "dotenv": "^16.5.0"
+    "dotenv": "^16.5.0",
+    "googleapis": "^148.0.0"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^13.0.0",
@@ -22,7 +22,6 @@
     "html-webpack-plugin": "^5.6.3",
     "style-loader": "^4.0.0",
     "webpack": "^5.99.8",
-    "webpack-cli": "^6.0.1",
-    "webpack-node-externals": "^3.0.0"
+    "webpack-cli": "^6.0.1"
   }
 }
