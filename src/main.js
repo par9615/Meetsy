@@ -17,13 +17,13 @@ export async function setUpAddon() {
         cloudProjectNumber: CLOUD_PROJECT_NUMBER,
     });
     const sidePanelClient = await session.createSidePanelClient();
-    document
-        .getElementById('start-activity')
-        .addEventListener('click', async () => {
-            await sidePanelClient.startActivity({
-                mainStageUrl: MAIN_STAGE_URL
-            });
-        });
+    // document
+    //     .getElementById('start-activity')
+    //     .addEventListener('click', async () => {
+    //         await sidePanelClient.startActivity({
+    //             mainStageUrl: MAIN_STAGE_URL
+    //         });
+    //     });
 }
 
 
