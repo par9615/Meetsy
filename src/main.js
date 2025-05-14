@@ -16,7 +16,10 @@ export async function setUpAddon() {
     const session = await meet.addon.createAddonSession({
         cloudProjectNumber: CLOUD_PROJECT_NUMBER,
     });
+
     const sidePanelClient = await session.createSidePanelClient();
+    console.log("code: " + (await sidePanelClient.getMeetingInfo()).meetingCode)
+    console.log("id: " + (await sidePanelClient.getMeetingInfo()).meetingId)
     // document
     //     .getElementById('start-activity')
     //     .addEventListener('click', async () => {
