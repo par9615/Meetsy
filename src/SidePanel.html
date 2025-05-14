@@ -17,8 +17,8 @@
         </li>
     </ul>
     <script>
-            document.body.onload = () => {
-                const sessionId = meetsy.setUpAddon();
+            document.body.onload = async() => {
+                const sessionId = await meetsy.setUpAddon();
 
                 var tokenClient = google.accounts.oauth2.initTokenClient({
                     client_id: '597555850167-knh3eknc2stovfs71d2u0tbjo4s0djh8.apps.googleusercontent.com',

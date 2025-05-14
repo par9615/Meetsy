@@ -22,7 +22,8 @@ export async function setUpAddon() {
     const sidePanelClient = await session.createSidePanelClient();
     // console.log("code: " + (await sidePanelClient.getMeetingInfo()).meetingCode)
     // console.log("id: " + (await sidePanelClient.getMeetingInfo()).meetingId)
-    const sessionId = (await sidePanelClient.getMeetingInfo()).meetingId;
+    const sessionId = (await sidePanelClient.getMeetingInfo()).meetingCode;
+    console.log("sessionId: " + sessionId);
     return sessionId;
 }
 
