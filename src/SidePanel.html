@@ -77,7 +77,7 @@
                 }
                 const spaceData = await spaceRes.json();
                 // activeConference.name is like "conferenceRecords/XYZ"
-                const recordName = spaceData.activeConference?.name;
+                const recordName = spaceData.activeConference?.name || spaceData.activeConference?.conferenceRecord;
                 if (!recordName) {
                     throw new Error(`No active conference found for space ${meetSpaceId}`);
                 }
