@@ -27,6 +27,9 @@
                     callback: (tokenResponse) => {
                         console.log(tokenResponse);
                         console.log(tokenResponse.access_token);
+
+                        var participants = fetchMeetingParticipants(tokenResponse.access_token, 'vyf-krmw-zbp');
+                        console.log(participants);
                         // tokenResponse.access_token contains your Bearer token
                     }
                 });
@@ -36,6 +39,50 @@
 
                 meetsy.setUpAddon();
             };
+
+
+
+            /**
+             * Retrieves the list of participants for a given Meet space.
+             *
+             * @param {string} oauthToken — A valid OAuth2 bearer token with
+             *     at least the scope `https://www.googleapis.com/auth/meetings.participants.readonly`
+             * @param {string} meetSpaceId — The Meet “space” ID (e.g. "spaces/ABC123")
+             * @returns {Promise<Array<Object>>} — Array of participant objects
+             */
+            async function fetchMeetingParticipants(oauthToken, meetSpaceId) {
+                const headers = {
+                    'Authorization': `Bearer ${oauthToken}`,
+                    'Accept': 'application/json'
+                };
+
+                // 1) Get the space to find its activeConference record name
+                const spaceRes = await fetch(
+                    `https://meet.googleapis.com/v2/spaces/${encodeURIComponent(meetSpaceId)}`,
+                    { method: 'GET', headers }
+                );
+                if (!spaceRes.ok) {
+                    throw new Error(`Failed to fetch space ${meetSpaceId}: ${spaceRes.status}`);
+                }
+                const spaceData = await spaceRes.json();
+                // activeConference.name is like "conferenceRecords/XYZ"
+                const recordName = spaceData.activeConference?.name;
+                if (!recordName) {
+                    throw new Error(`No active conference found for space ${meetSpaceId}`);
+                }
+
+                // 2) List participants in that conference record
+                const partsRes = await fetch(
+                    `https://meet.googleapis.com/v2/${recordName}/participants`,
+                    { method: 'GET', headers }
+                );
+                if (!partsRes.ok) {
+                    throw new Error(`Failed to list participants: ${partsRes.status}`);
+                }
+                const partsData = await partsRes.json();
+                // The API returns { participants: [...], nextPageToken: "..." }
+                return partsData.participants || [];
+            }
 
     </script>
 </body>
